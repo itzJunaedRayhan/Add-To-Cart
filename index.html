@@ -25,11 +25,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="MobileMinusBtn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="MobileQuantityValue" type="text" class="form-control text-center" value="1">
+                           <button id="MobilePlusBtn" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$ <span id="IphonePrice">1219</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -43,12 +43,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="CaseMinusBtn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="CaseQuantityValue" type="text" class="form-control text-center" value="1">
+                           <button id="CasePlusBtn" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$<span id="CasePrice">59</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$<span id="getSubTotal">1278</span></h5>
+                        <h5>$<span id="getTax">38.34</span></h5>
+                        <h5>$<span id="getTotal">1316.34</span></h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +77,141 @@
          </div>
       </div>
    </section>
-</body>
 
+
+
+   <script>
+      const MobilePlusBtn = document.getElementById('MobilePlusBtn');
+      const MobileMinusBtn = document.getElementById('MobileMinusBtn');
+
+      const CasePlusBtn       = document.getElementById('CasePlusBtn');
+      const CaseMinusBtn      = document.getElementById('CaseMinusBtn');
+
+      var MobileQuantityValue = document.getElementById('MobileQuantityValue');
+      var CaseQuantityValue   = document.getElementById('CaseQuantityValue');
+
+      var MblPriceValue = document.getElementById('IphonePrice');
+      var CasePriceValue = document.getElementById('CasePrice');
+
+
+      var SubTotal = document.getElementById('getSubTotal');
+      var GetTax   = document.getElementById('getTax');
+      var GetTotal = document.getElementById('getTotal');
+
+   // Increase Quantity
+      function Increase(Quantity){
+         const QtyValue = Quantity.value;
+         var QtyNumber = parseFloat(QtyValue);
+         QtyNumber++;
+         Quantity.value = QtyNumber;
+      }
+
+   // Decrease Quantity
+      function Decrease(Quantity){
+         const QtyValue = Quantity.value;
+         var QtyNumber   = parseFloat(QtyValue);
+         QtyNumber--;
+         Quantity.value = QtyNumber;
+      }
+
+   // Increase Price
+      function IncreaseCalculation(Price,SubTotalPrice,num,Tax,Total){
+         const ProductPrice   = Price.innerText;
+         var PriceNumber      = parseFloat(ProductPrice);
+         PriceNumber = PriceNumber + num;
+         Price.innerText = PriceNumber;
+
+      // Get Sub Total Price  
+         const STprice = SubTotalPrice.innerText;
+         var STnumber  = parseFloat(STprice);
+         STnumber = STnumber + num;
+         SubTotalPrice.innerText = STnumber;
+
+      // 2% Tax of SubTotal Price   
+         const TaxValue = Tax.innerText;
+         var TaxNumber  = parseFloat(TaxValue);
+         TaxNumber = STnumber * 3 / 100;
+         Tax.innerText  = TaxNumber;
+
+      // Total Amount
+         const totalValue = Total.innerText;
+         var totalNumber  = parseFloat(totalValue);
+         totalNumber = STnumber + TaxNumber;
+         Total.innerText = totalNumber;
+      }
+
+   // Decrease Price
+   function DecreaseCalculation(Price,SubTotalPrice,num,Tax,Total){
+      const ProductPrice   = Price.innerText;
+         var PriceNumber      = parseFloat(ProductPrice);
+         PriceNumber = PriceNumber - num;
+         Price.innerText = PriceNumber;
+      
+      // Get Sub Total Price
+         const STprice = SubTotalPrice.innerText;
+         var STnumber  = parseFloat(STprice);
+         STnumber = STnumber - num;
+         SubTotalPrice.innerText = STnumber;
+
+      // 2% Tax of SubTotal Price   
+         const TaxValue = Tax.innerText;
+         var TaxNumber  = parseFloat(TaxValue);
+         TaxNumber = STnumber * 3 / 100;
+         Tax.innerText  = TaxNumber;
+
+      // Total Amount
+         const totalValue = Total.innerText;
+         var totalNumber  = parseFloat(totalValue);
+         totalNumber = STnumber + TaxNumber;
+         Total.innerText = totalNumber;
+      }
+
+
+
+
+
+      MobilePlusBtn.addEventListener('click',function(){
+         // Increase Mobile Quantity 
+            Increase(MobileQuantityValue);
+
+         // increase Iphone Price
+         IncreaseCalculation(MblPriceValue,SubTotal,1219,GetTax,GetTotal);
+      });
+
+
+      
+      
+      MobileMinusBtn.addEventListener('click',function(){
+         // Decrease Mobile Quantity
+           Decrease(MobileQuantityValue);
+
+         // Decrease Iphone Price
+         DecreaseCalculation(MblPriceValue,SubTotal,1219,GetTax,GetTotal);
+      });
+
+
+      
+
+
+      CasePlusBtn.addEventListener('click',function(){
+         // Increase Case Quantity
+            Increase(CaseQuantityValue);
+
+         // Increase Case Price
+            IncreaseCalculation(CasePriceValue,SubTotal,59,GetTax,GetTotal);
+      });
+
+
+      
+      CaseMinusBtn.addEventListener('click',function(){
+         //    Decrease Case Quantity
+            Decrease(CaseQuantityValue);
+
+         //    Decrease Case Price
+            DecreaseCalculation(CasePriceValue,SubTotal,59,GetTax,GetTotal);
+      });
+   
+   </script>
+
+</body>
 </html>
